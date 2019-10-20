@@ -28,38 +28,11 @@ public  class Person {
     {id=count++;}
 
     private Person(PersonBuilder personBuilder){
-        try {
-            if (personBuilder==null){
-                throw new NullPointerException();
-            }
-        }
-        catch (NullPointerException e){
-            System.out.println("Object PersonBuilder is NULL");
-            personBuilder=new PersonBuilder();
-            personBuilder.surname="";
-            personBuilder.name="";
-            personBuilder.fathername="";
-            personBuilder.address="";
-            personBuilder.yearBorn=LocalDateTime.now();
-
-        }
-        catch (Exception e){
-            System.out.println("Object PersonBuilder has Error");
-            personBuilder=new PersonBuilder();
-            personBuilder.surname="";
-            personBuilder.name="";
-            personBuilder.fathername="";
-            personBuilder.address="";
-            personBuilder.yearBorn=LocalDateTime.now();
-        }
-        finally {
             this.surname=personBuilder.surname;
             this.name=personBuilder.name;
             this.fathername=personBuilder.fathername;
             this.address=personBuilder.address;
             this.yearBorn=personBuilder.yearBorn;
-        }
-
     }
 
    protected Person(){}
@@ -97,7 +70,6 @@ public  class Person {
         return  Objects.equals(surname, person.surname)&&
                 Objects.equals(name, person.name)&&
                 Objects.equals(address, person.address);
-
     }
 
     @Override
@@ -132,113 +104,49 @@ public  class Person {
         private LocalDateTime yearBorn;
 
          public PersonBuilder setSurname(String surname) {
-             try {
-                 if (surname==null){
-                     throw new NullPointerException();
+
+                 if (surname==null) {
+                     surname="";
+                     System.out.println("Surname can not be null");
                  }
-             }
-             catch (NullPointerException e){
-                 System.out.println("Surname is NULL");
-                 surname="";
-                 e.printStackTrace();
-             }
-             catch (Exception e){
-                 System.out.println("Surname is not founded");
-                 surname="";
-                 e.printStackTrace();
-             }
-             finally {
                  this.surname = surname;
                  return this;
-             }
          }
 
          public PersonBuilder setName(String name){
-             try {
-                 if (name==null){
-                     throw new NullPointerException();
-                 }
-             }
-             catch (NullPointerException e){
-                 System.out.println("Name is NULL");
+             if (name==null) {
                  name="";
-                 e.printStackTrace();
+                 System.out.println("Name can not be null");
              }
-             catch (Exception e){
-                 System.out.println("Name is not founded");
-                 name="";
-                 e.printStackTrace();
-             }
-             finally {
-                 this.name = name;
-                 return this;
-             }
+             this.name = name;
+             return this;
          }
 
          public PersonBuilder setFathername(String fathername){
-             try {
-                 if (fathername==null){
-                     throw new NullPointerException();
-                 }
-             }
-             catch (NullPointerException e){
-                 System.out.println("Fathername is NULL");
+             if (fathername==null) {
                  fathername="";
-                 e.printStackTrace();
+                 System.out.println("Fathername can not be null");
              }
-             catch (Exception e){
-                 System.out.println("Fathername is not founded");
-                 fathername="";
-                 e.printStackTrace();
-             }
-             finally {
-                 this.fathername = fathername;
-                 return this;
-             }
+             this.fathername = fathername;
+             return this;
          }
 
          public PersonBuilder setAddress(String address){
-             try {
-                 if (address==null){
-                     throw new NullPointerException();
-                 }
-             }
-             catch (NullPointerException e){
-                 System.out.println("Address is NULL");
+             if (address==null) {
                  address="";
-                 e.printStackTrace();
+                 System.out.println("Address can not be null");
              }
-             catch (Exception e){
-                 System.out.println("Address is not founded");
-                 address="";
-                 e.printStackTrace();
-             }
-             finally {
-                 this.address = address;
-                 return this;
-             }
+             this.address = address;
+             return this;
          }
 
          public PersonBuilder setYearBorn(LocalDateTime yearBorn){
-             try {
-                 if (yearBorn==null){
-                     throw new NullPointerException();
-                 }
-             }
-             catch (NullPointerException e){
-                 System.out.println("YearBorn is NULL");
+             if (yearBorn==null) {
                  yearBorn=LocalDateTime.now();
-                 e.printStackTrace();
+                 System.out.println("Year Born can not be null");
              }
-             catch (Exception e){
-                 System.out.println("YearBorn has ERROR");
-                 yearBorn=LocalDateTime.now();
-                 e.printStackTrace();
-             }
-             finally {
-                 this.yearBorn = yearBorn;
-                 return this;
-             }
+             this.yearBorn= yearBorn;
+             return this;
          }
          public Person build() {
              return new Person(this);

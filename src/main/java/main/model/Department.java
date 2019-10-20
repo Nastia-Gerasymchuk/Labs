@@ -54,6 +54,20 @@ public class Department {
                 Objects.equals(name, that.name);
                 //Objects.equals(employees, that.employees);*/
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, employees);
+    }
+
+    @Override
+    public String toString() {
+        String res = "Department:" +
+                "name='" + name + '\'' + ", employees:";
+        for (Employee e : employees) {
+            res += e.toString() + "; ";
+        }
+        return res;
+    }
 
     /**
      * The next class alloys user to set values of fields correctly.
@@ -63,42 +77,28 @@ public class Department {
      * method build; inside it we go to private constructor the first class, this method return
      * object, which is the type of the first class
      */
-    public static class DepartmentBuilder{
+    public static class DepartmentBuilder {
         private String name;
         private List<Employee> employees;
-        public DepartmentBuilder setName (String name){
-            //try {
-                if(name==null){
-//                    throw new NullPointerException();
-//                }
-//            }
-//            catch (NullPointerException e){
-//                System.out.println("name is NULL");
-//                e.printStackTrace();
-                name="";
-           }
-//            catch (Exception e){
-//                System.out.println("name has Errors");
-//                e.printStackTrace();
-//                name="";
-//            }
-//            finally {
-              this.name=name;
-               return this;
 
-        }
-        public DepartmentBuilder setDepartment(List<Employee> employees){
-            try {
-                if(employees==null){
-                    throw new Exception();
-                }
+        public DepartmentBuilder setName(String name) {
+            if (name == null) {
+                System.out.println("Name of department can not be NULL");
+                name = "";
             }
-            catch (Exception e){
+            this.name = name;
+            return this;
+        }
+
+
+        public DepartmentBuilder setDepartment(List<Employee> employees) {
+
+            if (employees == null) {
+
                 System.out.println("Employee has ERRORS");
-                e.printStackTrace();
-                employees=new LinkedList<Employee>();
-                Post p=new Post.PostBuilder().setName("").setSalary(0).build();
-                Employee emp=new Employee.EmployeeBuilder().setName("").
+                employees = new LinkedList<Employee>();
+                Post p = new Post.PostBuilder().setName("").setSalary(0).build();
+                Employee emp = new Employee.EmployeeBuilder().setName("").
                         setSurname("").
                         setFathername("").
                         setAddress("").
@@ -110,33 +110,17 @@ public class Department {
                         setWorkingRate(0).
                         setYearBorn(LocalDateTime.now()).
                         build();
-
                 employees.add(emp);
             }
-            finally {
-
-                this.employees=employees;
+                this.employees = employees;
                 return this;
+
+            }
+            public Department build () {
+                return new Department(this);
             }
         }
-        public Department build(){
-            return new Department(this);
-        }
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, employees);
-    }
-
-    @Override
-    public String toString() {
-        String res= "Department:" +
-                "name='" + name + '\''+", employees:" ;
-        for (Employee e : employees) {
-            res+=e.toString() + "; ";
-        }
-                return res;
     }
     //public boolean addEmployee(Employee employee)
 
@@ -150,4 +134,4 @@ public class Department {
 
 
 
-}
+

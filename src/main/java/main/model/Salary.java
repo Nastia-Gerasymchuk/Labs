@@ -16,7 +16,7 @@ public class Salary {
     private LocalDateTime dateOfSalary;
     private float doingHours;
     private static int count;
-    private final int MAX_DOING_HOURS =672; //31*8
+    private final int MAX_DOING_HOURS =248; //
     private final int MIN_DOING_HOURS =0;
 
     {id=count++;}

@@ -37,28 +37,10 @@ public class Post {
      *private constructor
      * @param p is Object type PostBuilder
      */
+
     private Post(PostBuilder p){
-        try {
-            if(p==null){
-                throw new NullPointerException("Object PostBuilder is NULL");
-            }
-            if(p.getClass()!=PostBuilder.class){
-                throw new ClassNotFoundException("This object is not PostBuilder object");
-            }
             this.name=p.name;
             this.salary=p.salary;
-        }
-        catch (NullPointerException e){
-               this.name="";
-               this.salary=MIN_SALARY;
-               e.printStackTrace();
-        }
-        catch (Exception e){
-            this.name="";
-            this.salary=MIN_SALARY;
-            e.printStackTrace();
-        }
-
     }
 
     private long getId() {
@@ -109,48 +91,33 @@ public class Post {
         private final double MIN_SALARY =3000;
 
         public PostBuilder setName(String name){
-            try {
-                if (name == null) throw new NullPointerException("name is null");
-                this.name = name;
-            }
-            catch (NullPointerException e){
-                this.name="";
-                e.printStackTrace();
-            }
-            finally {
+
+                if (name == null)
+                {name="";}
+                this.name=name;
                 return this;
-            }
         }
 
         public PostBuilder setSalary(double salary) /*throws SalaryException */{
-            try {
+
                 if(salary<MIN_SALARY){
-                    //salary= MIN_SALARY;
-                    throw new SalaryException("salary can not be less than minimum salary");
+                   salary=MIN_SALARY;
+                    System.out.println("salary can not be less than minimum salary");
                 }
                 if (salary> MAX_SALARY){
-                    //salary= MAX_SALARY;
-                    throw new MaxSalaryException("salary can not be more than maximum salary");
+                    salary= MAX_SALARY;
+                    System.out.println("salary can not be more than maximum salary");
                 }
                 this.salary = salary;
-            }
-            catch (MinSalaryException e){
-                this.salary=MIN_SALARY;
-                System.out.println("ERROR: "+e.getMessage());
-            }
-            catch (MaxSalaryException e){
-                this.salary=MAX_SALARY;
-                System.out.println("ERROR: "+e.getMessage());
-            }
-            finally {
                 return this;
             }
-        }
+
 
         public Post build(){
             return new Post(this);
         }
     }
+}
 
     //    public Post setName(String name) {
 //        this.name = name;
@@ -166,6 +133,6 @@ public class Post {
 //        }
 //        this.salary = salary;
 //    }
-}
+
 
 

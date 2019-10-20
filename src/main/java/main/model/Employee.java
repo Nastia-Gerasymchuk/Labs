@@ -1,11 +1,8 @@
 package main.model;
 
 import main.enums.CategoryDepartment;
-import main.exceptions.WorkingRate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static main.enums.CategoryDepartment.NONE;
@@ -40,31 +37,6 @@ public class Employee extends Person {
      * It alloys us to set for all fields our object Employee some values.
      */
     private Employee(EmployeeBuilder employeeBuilder){
-        try {
-            if(employeeBuilder==null){
-                throw new NullPointerException();
-            }
-        }
-        catch (Exception e){
-            employeeBuilder=new EmployeeBuilder();
-            System.out.println("Object of class EmployeeBuilder has Errors");
-            employeeBuilder.department=new Department.DepartmentBuilder().
-                    setName("").
-                    setDepartment(null).build();
-            myPost=employeeBuilder.myPost;
-            dateComingAtWork=employeeBuilder.dateComingAtWork;
-            workingRate=employeeBuilder.workingRate;
-            category=employeeBuilder.category;
-            beingInPoliclinic=employeeBuilder.beingInPoliclinic;
-            beingBeingInHospital=employeeBuilder.beingBeingInHospital;
-            surname=employeeBuilder.surname;
-            name=employeeBuilder.name;
-            fathername=employeeBuilder.fathername;
-            address=employeeBuilder.address;
-            yearBorn=employeeBuilder.yearBorn;
-        }
-        finally {
-
             this.department=employeeBuilder.department;
             this.myPost=employeeBuilder.myPost;
             this.dateComingAtWork=employeeBuilder.dateComingAtWork;
@@ -77,7 +49,6 @@ public class Employee extends Person {
             this.fathername=employeeBuilder.fathername;
             this.address=employeeBuilder.address;
             this.yearBorn=employeeBuilder.yearBorn;
-        }
     }
 
 
@@ -155,7 +126,7 @@ public class Employee extends Person {
      * method build; inside it we go to private constructor the first class, this method return
      * object, which is the type of the first class
      */
-    public static class EmployeeBuilder{
+    public static class EmployeeBuilder {
         private Department department;
         private Post myPost;
         private LocalDateTime dateComingAtWork;
@@ -170,237 +141,125 @@ public class Employee extends Person {
         private LocalDateTime yearBorn;
 
         public EmployeeBuilder setDepartment(Department department) {
-            try {
-                if (department==null){
-                    throw new NullPointerException();
-                }
-            }
-            catch (Exception e){
-                System.out.println("department has ERRORS");
-                e.printStackTrace();
-                department=new Department.DepartmentBuilder().setDepartment(null).setName(null).build();
+
+            if (department == null) {
+                System.out.println("Department can not be NULL");
+                department = new Department.DepartmentBuilder().setDepartment(null).setName(null).build();
             }
             this.department = department;
             return this;
         }
-        public EmployeeBuilder setPost(Post post){
-            try {
-                if(post==null){
-                    throw new NullPointerException("Post needs to be initialised");
-                }
+
+        public EmployeeBuilder setPost(Post post) {
+            if (post == null) {
+                System.out.println("Post can not be NULL");
+                myPost = new Post.PostBuilder().setName("").setSalary(0).build();
             }
-            catch (NullPointerException e){
-                System.out.println("Warning: "+e.getMessage());
-                post=new Post.PostBuilder().setName(null).setSalary(0).build();
-            }
-            finally {
-                this.myPost=post;
-                return this;
-            }
+            this.myPost = myPost;
+            return this;
 
         }
-        public EmployeeBuilder setDateComingAtWork(LocalDateTime localDateTime){
-            try {
-                if(localDateTime==null){
-                    throw new  NullPointerException("Date coming at work can not be NULL");
-                }
+
+        public EmployeeBuilder setDateComingAtWork(LocalDateTime localDateTime) {
+            if (localDateTime == null) {
+                System.out.println("Date Coming At Work can not be NULL");
+                localDateTime = LocalDateTime.now();
             }
-            catch (NullPointerException e){
-                e.printStackTrace();
-                e.getMessage();
-                localDateTime=LocalDateTime.now();
-            }
-            finally {
-                this.dateComingAtWork=localDateTime;
-                return this;
-            }
-        }
-        public EmployeeBuilder setWorkingRate(double workingRate){
-            try{
-                if(workingRate>1. || workingRate<0.){
-                    throw new WorkingRate("Working rate needs to be more 0 and less 1");
-                }
-            }
-            catch (WorkingRate e){
-                e.getMessage();
-                System.out.println("Working rate equals 0");
-                workingRate=0.;
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                System.out.println("Working rate equals 0");
-                workingRate=0.;
-            }
-            finally {
-                this.workingRate=workingRate;
-                return this;
-            }
-        }
-        public EmployeeBuilder setCategory(CategoryDepartment category){
-            try {
-                if(category==null){
-                    throw new NullPointerException("category can not be NULL");
-                }
-            }
-            catch (NullPointerException e){
-                e.getMessage();
-                System.out.println("category is NONE");
-                category=NONE;
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                System.out.println("category is NONE");
-                category=NONE;
-            }
-             finally {
-                this.category=category;
-                return this;
-            }
-        }
-        public EmployeeBuilder setBeingInPoliclinic(boolean beingInPoliclinic) throws Exception {
-            try {
-                throw new Exception("beingInPoliclinic has ERRORS");
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                System.out.println("beingInPoliclinic equals FALSE");
-                beingInPoliclinic=false;
-            }
-            finally {
-                this.beingInPoliclinic=beingInPoliclinic;
-                return this;
-            }
-        }
-        public EmployeeBuilder setBeingInHospital(boolean beingBeingInHospital) throws Exception{
-            try {
-                throw new Exception("beingInHospital has ERRORS");
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                System.out.println("beingInHospital equals FALSE");
-                beingBeingInHospital=false;
-            }
-            finally {
-                this.beingBeingInHospital=beingBeingInHospital;
-                return this;
-            }
+            this.dateComingAtWork = localDateTime;
+            return this;
         }
 
+        public EmployeeBuilder setWorkingRate(double workingRate) {
+            if (workingRate < 0.) {
+                System.out.println("Working rate needs to be more 0");
+                workingRate = 0;
+            }
+            this.workingRate = workingRate;
+            return this;
+        }
+
+        public EmployeeBuilder setCategory(CategoryDepartment category) {
+
+            if (category == null) {
+                System.out.println("category can not be NULL");
+                category = NONE;
+            }
+            this.category = category;
+            return this;
+        }
+
+
+
+        public EmployeeBuilder setBeingInPoliclinic(boolean beingInPoliclinic) {
+            this.beingInPoliclinic = beingInPoliclinic;
+            return this;
+        }
+
+        public EmployeeBuilder setBeingInHospital(boolean beingBeingInHospital){
+
+            this.beingBeingInHospital=beingBeingInHospital;
+            return this;
+        }
 
         public EmployeeBuilder setSurname(String surname) {
-            try {
-                if (surname==null){
-                    throw new NullPointerException();
-                }
-            }
-            catch (NullPointerException e){
-                System.out.println("Surname is NULL");
+
+            if (surname==null){
                 surname="";
-                e.printStackTrace();
+                System.out.println("Surname can not be NULL");
             }
-            catch (Exception e){
-                System.out.println("Surname is not founded");
-                surname="";
-                e.printStackTrace();
-            }
-            finally {
-                this.surname = surname;
-                return this;
-            }
+
+            this.surname = surname;
+            return this;
+
         }
 
         public EmployeeBuilder setName(String name){
-            try {
-                if (name==null){
-                    throw new NullPointerException();
-                }
-            }
-            catch (NullPointerException e){
-                System.out.println("Name is NULL");
+            if (name==null){
                 name="";
-                e.printStackTrace();
+                System.out.println("Name can not be NULL");
             }
-            catch (Exception e){
-                System.out.println("Name is not founded");
-                name="";
-                e.printStackTrace();
-            }
-            finally {
-                this.name = name;
-                return this;
-            }
+
+            this.name = name;
+            return this;
         }
 
         public EmployeeBuilder setFathername(String fathername){
-            try {
-                if (fathername==null){
-                    throw new NullPointerException();
-                }
-            }
-            catch (NullPointerException e){
-                System.out.println("Fathername is NULL");
+            if (fathername==null){
                 fathername="";
-                e.printStackTrace();
+                System.out.println("Fathername can not be NULL");
             }
-            catch (Exception e){
-                System.out.println("Fathername is not founded");
-                fathername="";
-                e.printStackTrace();
-            }
-            finally {
-                this.fathername = fathername;
-                return this;
-            }
+
+            this.fathername = fathername;
+            return this;
         }
 
         public EmployeeBuilder setAddress(String address){
-            try {
-                if (address==null){
-                    throw new NullPointerException();
-                }
-            }
-            catch (NullPointerException e){
-                System.out.println("Address is NULL");
+            if (address==null){
                 address="";
-                e.printStackTrace();
+                System.out.println("Address can not be NULL");
             }
-            catch (Exception e){
-                System.out.println("Address is not founded");
-                address="";
-                e.printStackTrace();
-            }
-            finally {
-                this.address = address;
-                return this;
-            }
+
+            this.address = address;
+            return this;
         }
 
         public EmployeeBuilder setYearBorn(LocalDateTime yearBorn){
-            try {
-                if (yearBorn==null){
-                    throw new NullPointerException();
-                }
-            }
-            catch (NullPointerException e){
-                System.out.println("YearBorn is NULL");
+            if (yearBorn==null) {
                 yearBorn=LocalDateTime.now();
-                e.printStackTrace();
+                System.out.println("Year Born can not be null");
             }
-            catch (Exception e){
-                System.out.println("YearBorn has ERROR");
-                yearBorn=LocalDateTime.now();
-                e.printStackTrace();
-            }
-            finally {
-                this.yearBorn = yearBorn;
-                return this;
-            }
+            this.yearBorn= yearBorn;
+            return this;
         }
-
-
-        public Employee build(){
+        public Employee build() {
             return new Employee(this);
         }
+
+    }
+}
+
+
+
         //Person p = new PersonBuilder().setAddress("jj").build();
         //Employee emp = new EmployeeBuilder().setName("p").setCategory(CategoryDepartment.NONE).build();
         /*public Employee(String surname, String name, String fathername, String address, LocalDateTime yearBorn, Department departmentName, Post myPost, LocalDateTime dateComingAtWork, float workingRate, CategoryDepartment category,boolean policlinic,boolean hospital) {
@@ -415,5 +274,5 @@ public class Employee extends Person {
         this.beingBeingInHospital=hospital;
     }*/
 
-    }
-}
+
+
