@@ -103,5 +103,13 @@ public class AllDepartments {
         return Objects.hash(departments, departmentAdd, hospitalAdd, policlinicAdd);
     }
 
-
+    @Override
+    public String toString() {
+        return "AllDepartments:" +
+                departments.toString()+
+                ", departmentAdd='" + departmentAdd + '\'' +
+                ", hospitalAdd='" + hospitalAdd + '\'' +
+                ", policlinicAdd='" + policlinicAdd + '\'' +
+                '}';
+    }
 }

@@ -4,9 +4,7 @@ package main.model;
 import main.enums.CategoryDepartment;
 
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -16,6 +14,7 @@ import java.util.*;
  * @Override methods: equals, toString and hashcode,
  * static Class DepartmentBuilder, which allows users to set values of fields right.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Department {
     private long id;
     private String name;
@@ -85,6 +84,7 @@ public class Department {
             if (name == null) {
                 System.out.println("Name of department can not be NULL");
                 name = "";
+                System.out.println("Department's name has been installed such as empty" );
             }
             this.name = name;
             return this;
@@ -111,6 +111,7 @@ public class Department {
                         setYearBorn(LocalDateTime.now()).
                         build();
                 employees.add(emp);
+                System.out.println("Employee has been installed such as empty" );
             }
                 this.employees = employees;
                 return this;

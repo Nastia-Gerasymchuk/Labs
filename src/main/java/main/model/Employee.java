@@ -2,25 +2,24 @@ package main.model;
 
 import main.enums.CategoryDepartment;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static main.enums.CategoryDepartment.NONE;
 
 /**
- * class Employee has some information about  Employee.
- * It inheritances from Person  surname, name, fathername, address, yearBorn  and all Its methods.
- * Id alloys determine every person Unique.
- * Count is private static change, which alloys calculate Id for every new person
- *
  * Class Employee has:
- * private constructor,
- * get Functions for all Its fields,
  * @Override methods: equals, toString and hashcode,
  * static Class EmployeeBuilder, which allows users to set values of fields right.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Employee extends Person {
     private long idEmployee;
+    //private long departmentId;
+    @XmlTransient
     private Department department;
     private Post myPost;
     private LocalDateTime dateComingAtWork;
@@ -68,7 +67,7 @@ public class Employee extends Person {
     public long getIdEmployee() {
         return idEmployee;
     }
-    public Department getDepartment() {
+    public Department getDepartmentId() {
         return department;
     }
 
@@ -99,7 +98,7 @@ public class Employee extends Person {
         Employee employee = (Employee) o;
         return this.getName() == employee.getName()&&
                 this.getSurname()==employee.getSurname()&&
-                this.getDepartment()==employee.getDepartment();
+                this.getDepartmentId()==employee.getDepartmentId();
     }
 
     @Override
@@ -110,11 +109,11 @@ public class Employee extends Person {
     public String toString() {
         return "Employee:" +
                 super.toString()+
-                ", department=" + department +
                 ", myPost=" + myPost +
-                ", dateComingAtWork=" + dateComingAtWork +
+                "name Department is"+department+
+                ", dateComingAtWork=" + dateComingAtWork.toString() +
                 ", workingRate=" + workingRate +
-                ", category='" + category + '\'' +
+                ", category='" + category.toString() + '\'' +
                 '}';
     }
 
@@ -140,13 +139,13 @@ public class Employee extends Person {
         private String address;
         private LocalDateTime yearBorn;
 
-        public EmployeeBuilder setDepartment(Department department) {
+        public EmployeeBuilder setDepartment(Department departmentId) {
 
-            if (department == null) {
-                System.out.println("Department can not be NULL");
-                department = new Department.DepartmentBuilder().setDepartment(null).setName(null).build();
+            if (department ==null)this.department = departmentId;
+            else {
+                System.out.println("DepartmentId can't be < 1.");
+                this.department =new Department.DepartmentBuilder().setName(null).setDepartment(null).build();
             }
-            this.department = department;
             return this;
         }
 
@@ -154,6 +153,7 @@ public class Employee extends Person {
             if (post == null) {
                 System.out.println("Post can not be NULL");
                 myPost = new Post.PostBuilder().setName("").setSalary(0).build();
+                System.out.println("Post has been installed such as empty" );
             }
             this.myPost = myPost;
             return this;
@@ -164,6 +164,7 @@ public class Employee extends Person {
             if (localDateTime == null) {
                 System.out.println("Date Coming At Work can not be NULL");
                 localDateTime = LocalDateTime.now();
+                System.out.println("Date Coming At Work has been installed such as Date Time which is now" );
             }
             this.dateComingAtWork = localDateTime;
             return this;
@@ -172,6 +173,7 @@ public class Employee extends Person {
         public EmployeeBuilder setWorkingRate(double workingRate) {
             if (workingRate < 0.) {
                 System.out.println("Working rate needs to be more 0");
+                System.out.println("Working rate has been installed such as 0" );
                 workingRate = 0;
             }
             this.workingRate = workingRate;
@@ -183,6 +185,7 @@ public class Employee extends Person {
             if (category == null) {
                 System.out.println("category can not be NULL");
                 category = NONE;
+                System.out.println("Category has been installed such as NONE" );
             }
             this.category = category;
             return this;
@@ -206,6 +209,8 @@ public class Employee extends Person {
             if (surname==null){
                 surname="";
                 System.out.println("Surname can not be NULL");
+                System.out.println("Surname has been installed such as empty" );
+
             }
 
             this.surname = surname;
@@ -217,6 +222,7 @@ public class Employee extends Person {
             if (name==null){
                 name="";
                 System.out.println("Name can not be NULL");
+                System.out.println("Name has been installed such as empty" );
             }
 
             this.name = name;
@@ -227,6 +233,7 @@ public class Employee extends Person {
             if (fathername==null){
                 fathername="";
                 System.out.println("Fathername can not be NULL");
+                System.out.println("Fathername has been installed such as empty" );
             }
 
             this.fathername = fathername;
@@ -237,6 +244,7 @@ public class Employee extends Person {
             if (address==null){
                 address="";
                 System.out.println("Address can not be NULL");
+                System.out.println("Address has been installed such as empty" );
             }
 
             this.address = address;
@@ -247,6 +255,7 @@ public class Employee extends Person {
             if (yearBorn==null) {
                 yearBorn=LocalDateTime.now();
                 System.out.println("Year Born can not be null");
+                System.out.println("Year Born has been installed such as Date Time now" );
             }
             this.yearBorn= yearBorn;
             return this;
@@ -254,7 +263,6 @@ public class Employee extends Person {
         public Employee build() {
             return new Employee(this);
         }
-
     }
 }
 

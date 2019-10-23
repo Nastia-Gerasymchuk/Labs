@@ -4,31 +4,25 @@ import main.exceptions.MaxSalaryException;
 import main.exceptions.MinSalaryException;
 import main.exceptions.SalaryException;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import java.util.Objects;
 
-/** class Post has some information about Post.
- * It is name of Post and full salary which Employee can get when he or she has all working rate.
- * MAX_SALARY is private const. It is Max salary.
- * MIN_SALARY is private const. It is Min Salary.
- * Id alloys determine every post Unique.
- * Count is private static change, which alloys calculate Id for every new post
- *
+/**
  * Class Post has:
- * private constructors,
- * get Functions for all Its fields,
+ * MAX_SALARY is private const. It is Max salary,
+ * MIN_SALARY is private const. It is Min Salary,
  * @Override methods: equals, toString and hashcode,
  * static Class PostBuilder, which allows users to set values of fields right.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Post {
-
-
     private long id;
     private String name;
     private double salary;
-
     private final double MAX_SALARY =5000;
     private final double MIN_SALARY =3000;
-
     private static int count; // UUID
 
     {id=++count;}
@@ -92,8 +86,11 @@ public class Post {
 
         public PostBuilder setName(String name){
 
-                if (name == null)
-                {name="";}
+                if (name == null){
+                name="";
+                System.out.println("name can not be NULL\n");
+                System.out.println("name has been installed such as empty" );
+                }
                 this.name=name;
                 return this;
         }
@@ -103,10 +100,12 @@ public class Post {
                 if(salary<MIN_SALARY){
                    salary=MIN_SALARY;
                     System.out.println("salary can not be less than minimum salary");
+                    System.out.println("salary has been installed such as MIN_SALARY" );
                 }
                 if (salary> MAX_SALARY){
                     salary= MAX_SALARY;
                     System.out.println("salary can not be more than maximum salary");
+                    System.out.println("salary has been installed such as MAX_SALARY" );
                 }
                 this.salary = salary;
                 return this;

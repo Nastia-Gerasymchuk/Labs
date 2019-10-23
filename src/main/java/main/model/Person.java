@@ -5,17 +5,13 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * class Person has some information about Person.
- * It is surname, name, fathername, address, yearBorn of Person.
- * Id alloys determine every person Unique.
- * Count is private static change, which alloys calculate Id for every new person
- *
+
  * Class Person has:
  * Default and private constructors,
- * get Functions for all Its fields,
  * @Override methods: equals, toString and hashcode,
  * static Class PersonBuilder, which allows users to set values of fields right.
  */
+
 public  class Person {
     private long id;
     protected String surname;
@@ -108,6 +104,7 @@ public  class Person {
                  if (surname==null) {
                      surname="";
                      System.out.println("Surname can not be null");
+                     System.out.println("Surname has been installed such as empty" );
                  }
                  this.surname = surname;
                  return this;
@@ -117,6 +114,7 @@ public  class Person {
              if (name==null) {
                  name="";
                  System.out.println("Name can not be null");
+                 System.out.println("name has been installed such as empty" );
              }
              this.name = name;
              return this;
@@ -126,6 +124,7 @@ public  class Person {
              if (fathername==null) {
                  fathername="";
                  System.out.println("Fathername can not be null");
+                 System.out.println("Fathername has been installed such as empty" );
              }
              this.fathername = fathername;
              return this;
@@ -135,6 +134,7 @@ public  class Person {
              if (address==null) {
                  address="";
                  System.out.println("Address can not be null");
+                 System.out.println("Address has been installed such as empty" );
              }
              this.address = address;
              return this;
@@ -144,6 +144,7 @@ public  class Person {
              if (yearBorn==null) {
                  yearBorn=LocalDateTime.now();
                  System.out.println("Year Born can not be null");
+                 System.out.println("Year Born has been installed such as Date Time which is now" );
              }
              this.yearBorn= yearBorn;
              return this;
