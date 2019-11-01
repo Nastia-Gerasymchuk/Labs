@@ -67,6 +67,13 @@ public class AllDepartments {
         return res.get(0);
     }
 
+    public Set<String> findSetNames(){
+        return departments.stream().map((Department::getName)).collect(Collectors.toSet());
+    }
+    public Long countDepartments(){
+        return findSetNames().stream().count();
+    }
+
     public List<Employee> getEmployeesByPost(String post){
         List<Employee> res=new ArrayList<>();
         Iterator<Department> iterator=departments.iterator();
@@ -107,9 +114,9 @@ public class AllDepartments {
     public String toString() {
         return "AllDepartments:" +
                 departments.toString()+
-                ", departmentAdd='" + departmentAdd + '\'' +
-                ", hospitalAdd='" + hospitalAdd + '\'' +
-                ", policlinicAdd='" + policlinicAdd + '\'' +
+                ", departmentAdd=" + departmentAdd + '\'' +
+                ", hospitalAdd=" + hospitalAdd + '\'' +
+                ", policlinicAdd=" + policlinicAdd + '\'' +
                 '}';
     }
 }

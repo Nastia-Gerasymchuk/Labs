@@ -16,10 +16,10 @@ import java.util.LinkedList;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Department dep0 = new Department.DepartmentBuilder()
-                .setName("dep0")
-                .setDepartment(new LinkedList<>(Arrays.asList()))
-                .build();
+//        Department dep0 = new Department.DepartmentBuilder()
+//                .setName("dep0")
+//                .setDepartment(new LinkedList<>(Arrays.asList()))
+//                .build();
         Post post1 = new Post.PostBuilder()
                 .setName("post1")
                 .setSalary(3000)
@@ -29,7 +29,7 @@ public class Main {
                 .setAddress("a1")
                 .setCategory(CategoryDepartment.THE_FIRST)
                 .setDateComingAtWork(LocalDateTime.now())
-                .setDepartment(dep0)
+                .setDepartment(null)
                 .setName("N1")
                 .setSurname("S1")
                 .setFathername("F1")
@@ -55,6 +55,7 @@ public class Main {
         json.serialize(allDepartments,"test.json");
         TXTAllDepartments txt=new TXTAllDepartments();
         txt.serialize(allDepartments,"text.txt");
+
 
     }
 }

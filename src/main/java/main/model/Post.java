@@ -4,6 +4,9 @@ import main.exceptions.MaxSalaryException;
 import main.exceptions.MinSalaryException;
 import main.exceptions.SalaryException;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,11 +21,17 @@ import java.util.Objects;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Post {
+    private static final double MAX_SALARY =5000;
+    private static final double MIN_SALARY =3000;
+
     private long id;
+
+    @NotNull(message = "name can not be NULL")
     private String name;
+
+    @Min(value = 3000,message = "salary needs to be more than 3000")
+    @Max(value = 5000,message = "salary needs to be lass than 3000")
     private double salary;
-    private final double MAX_SALARY =5000;
-    private final double MIN_SALARY =3000;
     private static int count; // UUID
 
     {id=++count;}
@@ -78,11 +87,10 @@ public class Post {
      */
     public static class PostBuilder{
 
-        private String name;
-        private double salary;
 
-        private final double MAX_SALARY =5000;
-        private final double MIN_SALARY =3000;
+        private String name = "post";
+        private double salary=MIN_SALARY;
+
 
         public PostBuilder setName(String name){
 

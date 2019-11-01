@@ -10,11 +10,11 @@ import java.time.LocalDateTime;
 
 import static main.enums.CategoryDepartment.*;
 
-public class Salary {
+public class Salary{
     private int id ;
     private Employee employee;
     private LocalDateTime dateOfSalary;
-    private float doingHours;
+    private float workingHours;
     private static int count;
     private final int MAX_DOING_HOURS =248; //
     private final int MIN_DOING_HOURS =0;
@@ -42,7 +42,7 @@ public class Salary {
         return "Salary:" +
                 ", employee=" + employee.toString() +
                 ", dateOfSalary=" + dateOfSalary +
-                ", doingHours=" + doingHours;
+                ", workingHours=" +workingHours ;
     }
 
     private int getId() {
@@ -54,19 +54,13 @@ public class Salary {
     }
 
     private void setEmployee(Employee employee) {
-        try {
-            if(employee==null){
-                throw new NullPointerException("employee is not founded");
+
+            if(employee==null) {
+                System.out.println("employee is not founded");
+                System.out.println("Employee exists faux");
+                employee=new Employee.EmployeeBuilder().build();
             }
-        }
-        catch (Exception e){
-            e.getMessage();
-            System.out.println("Employee exists faux");
-            employee=new Employee.EmployeeBuilder().build();
-        }
-        finally {
             this.employee = employee;
-        }
     }
 
     private LocalDateTime getDateOfSalary() {
@@ -74,46 +68,40 @@ public class Salary {
     }
 
     private void setDateOfSalary(LocalDateTime dateOfSalary) {
-        try {
+
             if(dateOfSalary==null){
-                throw new NullPointerException("date of salary can not be null");
+                System.out.println("date of salary can not be null");
+                System.out.println("date of salary is now");
+                dateOfSalary=LocalDateTime.now();
             }
-        }
-        catch (Exception e){
-            e.getMessage();
-            System.out.println("date of salary is now");
-            dateOfSalary=LocalDateTime.now();
-        }
-        finally {
             this.dateOfSalary=dateOfSalary;
-        }
     }
 
-    private float getDoingHours() {
-        return doingHours;
+    private float getWorkingHours() {
+        return workingHours ;
     }
 
-    private void setDoingHours(float doingHours) {
+    private void setDoingHours(float workingHours) {
         try {
-            if (doingHours< MIN_DOING_HOURS){
+            if (workingHours< MIN_DOING_HOURS){
                 throw new MinDoingHours("Working days can not be less than MIN COUNT DOING HOURS: IT IS 0");
             }
-            if (doingHours> MAX_DOING_HOURS){
+            if (workingHours> MAX_DOING_HOURS){
                 throw new MaxDoingHours("Working days can not be more than MAX COUNT DOING HOURS: IT IS 672");
             }
         } catch (MinDoingHours minDoingHours) {
             minDoingHours.getMessage();
             System.out.println("doing hours is MIN COUNT DOING HOURS: IT IS 0");
-            doingHours=MIN_DOING_HOURS;
+            workingHours=MIN_DOING_HOURS;
         }
         catch (MaxDoingHours maxDoingHours){
             maxDoingHours.getMessage();
             System.out.println("doing hours is MAX COUNT DOING HOURS: IT IS 672");
-            doingHours=MAX_DOING_HOURS;
+            workingHours=MAX_DOING_HOURS;
         }
         finally {
 
-            this.doingHours = doingHours;
+            this.workingHours = workingHours;
         }
     }
 
@@ -124,20 +112,16 @@ public class Salary {
 
         CategoryDepartment categoryDepartment=employee.getCategory();
         double persentOfCategory=GetPersentWithCategory(categoryDepartment);
-        return (employee.getSalaryPost()*employee.getWorkingRate()*(1+persentOfCategory))/getDoingHours();
+        return (employee.getSalaryPost()*employee.getWorkingRate()*(1+persentOfCategory))/ getWorkingHours();
     }
 
     private double GetPersentWithCategory(CategoryDepartment categoryDepartment) {
-        try {
+
             if(categoryDepartment==null){
-                throw new NullPointerException("Category can not be NULL");
+                System.out.println(("Category can not be NULL"));
+                System.out.println("Category is NONE");
+                return 0;
             }
-        }
-        catch (NullPointerException e){
-            e.getMessage();
-            System.out.println("Category is NONE");
-            return 0;
-        }
         if(categoryDepartment==UPPER)
             return 0.3;
         if (categoryDepartment==THE_FIRST)

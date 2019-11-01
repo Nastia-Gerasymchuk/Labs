@@ -16,7 +16,7 @@ import static main.enums.CategoryDepartment.NONE;
  * static Class EmployeeBuilder, which allows users to set values of fields right.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Employee extends Person {
+public class Employee extends Person implements Comparable{
     private long idEmployee;
     //private long departmentId;
     @XmlTransient
@@ -263,6 +263,17 @@ public class Employee extends Person {
         public Employee build() {
             return new Employee(this);
         }
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o==null){
+            throw new NullPointerException("Argument is null");
+        }
+        if(o instanceof Employee){
+            throw new IllegalArgumentException("Argument is not of Employee");
+        }
+        return ((Employee) o).getYearBorn().getYear()- this.getYearBorn().getYear();
     }
 }
 

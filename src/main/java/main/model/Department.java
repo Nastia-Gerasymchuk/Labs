@@ -4,9 +4,12 @@ package main.model;
 import main.enums.CategoryDepartment;
 
 
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -17,15 +20,47 @@ import java.util.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Department {
     private long id;
+
+    @NotNull(message = "name can not be null")
     private String name;
 
     @XmlElements({
             @XmlElement(name ="employee",type = Employee.class)
     })
     @XmlElementWrapper(name = "employees")
+
+
     private List<Employee> employees;
     private static int count;
     {id =++count;}
+    public Double findMaxSalaryOfDepartment()
+    {
+        return employees.stream().map(Employee::getSalaryPost).max(Double::compare).get();
+    }
+    public List<Employee> findEmployeeMaxSal(){
+        return employees.stream()
+                .filter((Employee employee)->{return employee.getSalaryPost()==findMaxSalaryOfDepartment();})
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Employee> findEmpByCategoryAndThisYear(){
+        return employees.stream()
+                .filter( (Employee employee)->{return employee.getCategory().equals(CategoryDepartment.UPPER);} )
+                .filter(e->e.getDateComingAtWork().getYear()==LocalDateTime.now().getYear())
+                .collect(Collectors.toList());
+    }
+
+//    public List<String> searchAllPosts(){
+//        return employees.stream().map(e->e.getMyPost().getName()).distinct().collect(Collectors.toList());
+//    }
+
+    public Employee findEmployeesMaxWorkingRate(){
+        return employees.stream().max(Comparator.comparing(e->e.getWorkingRate())).get();
+    }
+
+
+
     private Department(DepartmentBuilder departmentBuilder){
         this.name=departmentBuilder.name;
         this.employees=departmentBuilder.employees;
@@ -61,7 +96,7 @@ public class Department {
     @Override
     public String toString() {
         String res = "Department:" +
-                "name='" + name + '\'' + ", employees:";
+                "name=" + name + ' ' + ", employees:";
         for (Employee e : employees) {
             res += e.toString() + "; ";
         }

@@ -1,5 +1,6 @@
 package main.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.Objects;
@@ -18,7 +19,7 @@ public  class Person {
     protected String name;
     protected String fathername;
     protected String address;
-    protected LocalDateTime yearBorn;
+    protected LocalDate yearBorn;
     protected static int count;
 
     {id=count++;}
@@ -53,7 +54,7 @@ public  class Person {
         return address;
     }
 
-    public LocalDateTime getYearBorn() {
+    public LocalDate getYearBorn() {
         return yearBorn;
     }
 
@@ -97,7 +98,7 @@ public  class Person {
         private String name;
         private String fathername;
         private String address;
-        private LocalDateTime yearBorn;
+        private LocalDate yearBorn;
 
          public PersonBuilder setSurname(String surname) {
 
@@ -140,9 +141,9 @@ public  class Person {
              return this;
          }
 
-         public PersonBuilder setYearBorn(LocalDateTime yearBorn){
+         public PersonBuilder setYearBorn(LocalDate yearBorn){
              if (yearBorn==null) {
-                 yearBorn=LocalDateTime.now();
+                 yearBorn=LocalDate.now();
                  System.out.println("Year Born can not be null");
                  System.out.println("Year Born has been installed such as Date Time which is now" );
              }
