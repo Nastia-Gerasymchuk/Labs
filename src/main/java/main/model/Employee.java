@@ -1,14 +1,15 @@
 package main.model;
 
-import main.enums.CategoryDepartment;
+import main.dto.EmployeeDto;
+import main.enums.CategoryEmployee;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
-
-import static main.enums.CategoryDepartment.NONE;
 
 /**
  * Class Employee has:
@@ -17,14 +18,24 @@ import static main.enums.CategoryDepartment.NONE;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Employee extends Person implements Comparable{
-    private long idEmployee;
+    private int idEmployee;
     //private long departmentId;
     @XmlTransient
     private Department department;
+
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
     private Post myPost;
-    private LocalDateTime dateComingAtWork;
+
+    @NotNull(message = "date coming at work can not be NULL")
+    private LocalDate dateComingAtWork;
+
+    @Size(max = 3,message = "working rate needs to be more than 0 and less then 3")
     private double workingRate;
-    private CategoryDepartment category;
+    private CategoryEmployee category;
     private boolean beingInPoliclinic;
     private boolean beingBeingInHospital;
 
@@ -37,6 +48,7 @@ public class Employee extends Person implements Comparable{
      */
     private Employee(EmployeeBuilder employeeBuilder){
             this.department=employeeBuilder.department;
+            //this.idEmployee=employeeBuilder.idEml;
             this.myPost=employeeBuilder.myPost;
             this.dateComingAtWork=employeeBuilder.dateComingAtWork;
             this.workingRate=employeeBuilder.workingRate;
@@ -48,6 +60,8 @@ public class Employee extends Person implements Comparable{
             this.fathername=employeeBuilder.fathername;
             this.address=employeeBuilder.address;
             this.yearBorn=employeeBuilder.yearBorn;
+            this.login=employeeBuilder.login;
+            this.pasw=employeeBuilder.pasw;
     }
 
 
@@ -64,10 +78,10 @@ public class Employee extends Person implements Comparable{
         return beingBeingInHospital;
     }
 
-    public long getIdEmployee() {
+    public int getIdEmployee() {
         return idEmployee;
     }
-    public Department getDepartmentId() {
+    public Department getDepartment() {
         return department;
     }
 
@@ -78,7 +92,7 @@ public class Employee extends Person implements Comparable{
         return myPost.getSalary();
     }
 
-    public LocalDateTime getDateComingAtWork() {
+    public LocalDate getDateComingAtWork() {
         return dateComingAtWork;
     }
 
@@ -86,8 +100,34 @@ public class Employee extends Person implements Comparable{
         return workingRate;
     }
 
-    public CategoryDepartment getCategory() {
+    public CategoryEmployee getCategory() {
         return category;
+    }
+    public String getNameEmployee(){
+        return getName();
+    }
+
+    public EmployeeDto buildDto(){
+        EmployeeDto employeeDto= new EmployeeDto()
+                .setName(this.name)
+                .setFathername(this.fathername)
+                .setSurname(this.surname)
+                .setAddress(this.address)
+                .setIdEmployee(this.idEmployee)
+                .setDateComingAtWork(this.dateComingAtWork)
+                .setWorkingRate(this.workingRate)
+                .setYearBorn(this.yearBorn)
+                .setMyPost(this.myPost.getName())
+                .setLogin(this.login);
+        if(this.category==null)
+        {
+            employeeDto.setCategory("NONE");
+        }
+        else {
+            employeeDto.setCategory(this.category.toString());
+        }
+        return employeeDto;
+
     }
 
     @Override
@@ -98,7 +138,7 @@ public class Employee extends Person implements Comparable{
         Employee employee = (Employee) o;
         return this.getName() == employee.getName()&&
                 this.getSurname()==employee.getSurname()&&
-                this.getDepartmentId()==employee.getDepartmentId();
+                this.getDepartment()==employee.getDepartment();
     }
 
     @Override
@@ -110,11 +150,16 @@ public class Employee extends Person implements Comparable{
         return "Employee:" +
                 super.toString()+
                 ", myPost=" + myPost +
-                "name Department is"+department+
+                //"name Department is"+department+
                 ", dateComingAtWork=" + dateComingAtWork.toString() +
                 ", workingRate=" + workingRate +
                 ", category='" + category.toString() + '\'' +
                 '}';
+    }
+
+    public Employee setPersonId(int idPerson){
+        this.setIdPerson(idPerson);
+        return this;
     }
 
     /**
@@ -127,25 +172,35 @@ public class Employee extends Person implements Comparable{
      */
     public static class EmployeeBuilder {
         private Department department;
+        private int idEml;
         private Post myPost;
-        private LocalDateTime dateComingAtWork;
+        private LocalDate dateComingAtWork;
         private double workingRate;
-        private CategoryDepartment category;
+        private CategoryEmployee category;
         private boolean beingInPoliclinic;
         private boolean beingBeingInHospital;
         private String surname;
         private String name;
         private String fathername;
         private String address;
-        private LocalDateTime yearBorn;
+        private LocalDate yearBorn;
+        private String login;
+        private String pasw;
+
 
         public EmployeeBuilder setDepartment(Department departmentId) {
 
-            if (department ==null)this.department = departmentId;
+            if (departmentId !=null)this.department = departmentId;
             else {
                 System.out.println("DepartmentId can't be < 1.");
-                this.department =new Department.DepartmentBuilder().setName(null).setDepartment(null).build();
+                this.department =new Department.DepartmentBuilder().setName(null).build();
             }
+            return this;
+        }
+
+
+        public EmployeeBuilder setIdEml(int idEml) {
+            this.idEml = idEml;
             return this;
         }
 
@@ -155,18 +210,18 @@ public class Employee extends Person implements Comparable{
                 myPost = new Post.PostBuilder().setName("").setSalary(0).build();
                 System.out.println("Post has been installed such as empty" );
             }
-            this.myPost = myPost;
+            this.myPost = post;
             return this;
 
         }
 
-        public EmployeeBuilder setDateComingAtWork(LocalDateTime localDateTime) {
-            if (localDateTime == null) {
+        public EmployeeBuilder setDateComingAtWork(LocalDate localDate) {
+            if (localDate == null) {
                 System.out.println("Date Coming At Work can not be NULL");
-                localDateTime = LocalDateTime.now();
+                localDate = LocalDate.now();
                 System.out.println("Date Coming At Work has been installed such as Date Time which is now" );
             }
-            this.dateComingAtWork = localDateTime;
+            this.dateComingAtWork = localDate;
             return this;
         }
 
@@ -180,18 +235,23 @@ public class Employee extends Person implements Comparable{
             return this;
         }
 
-        public EmployeeBuilder setCategory(CategoryDepartment category) {
+//        public EmployeeBuilder setCategory(Category category) {
+//
+//            if (category == null) {
+//                System.out.println("category can not be NULL");
+//                category.persentMoney=0;
+//                category.name = NONE;
+//                System.out.println("Category has been installed such as NONE" );
+//            }
+//            this.category = category;
+//            return this;
+//        }
 
-            if (category == null) {
-                System.out.println("category can not be NULL");
-                category = NONE;
-                System.out.println("Category has been installed such as NONE" );
-            }
+
+        public EmployeeBuilder setCategory(CategoryEmployee category) {
             this.category = category;
             return this;
         }
-
-
 
         public EmployeeBuilder setBeingInPoliclinic(boolean beingInPoliclinic) {
             this.beingInPoliclinic = beingInPoliclinic;
@@ -251,37 +311,95 @@ public class Employee extends Person implements Comparable{
             return this;
         }
 
-        public EmployeeBuilder setYearBorn(LocalDateTime yearBorn){
+        public EmployeeBuilder setYearBorn(LocalDate yearBorn){
             if (yearBorn==null) {
-                yearBorn=LocalDateTime.now();
+                yearBorn=LocalDate.now();
                 System.out.println("Year Born can not be null");
                 System.out.println("Year Born has been installed such as Date Time now" );
             }
             this.yearBorn= yearBorn;
             return this;
         }
+
+        public EmployeeBuilder setLogin(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public EmployeeBuilder setPasw(String pasw) {
+            this.pasw = pasw;
+            return this;
+        }
+
         public Employee build() {
             return new Employee(this);
         }
     }
 
     @Override
+    protected long getPersonId() {
+        return super.getPersonId();
+    }
+
+    @Override
+    public String getSurname() {
+        return super.getSurname();
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public String getFathername() {
+        return super.getFathername();
+    }
+
+    @Override
+    public String getAddress() {
+        return super.getAddress();
+    }
+
+    @Override
+    public LocalDate getYearBorn() {
+        return super.getYearBorn();
+    }
+
+    @Override
+    public int getIdPerson() {
+        return super.getIdPerson();
+    }
+
+    @Override
+    public String getLogin() {
+        return super.getLogin();
+    }
+
+    @Override
+    public String getPasw() {
+        return super.getPasw();
+    }
+
+
+    @Override
     public int compareTo(Object o) {
         if(o==null){
             throw new NullPointerException("Argument is null");
         }
-        if(o instanceof Employee){
+        if(o instanceof Employee !=true){
             throw new IllegalArgumentException("Argument is not of Employee");
         }
         return ((Employee) o).getYearBorn().getYear()- this.getYearBorn().getYear();
     }
+
 }
 
 
 
         //Person p = new PersonBuilder().setAddress("jj").build();
-        //Employee emp = new EmployeeBuilder().setName("p").setCategory(CategoryDepartment.NONE).build();
-        /*public Employee(String surname, String name, String fathername, String address, LocalDateTime yearBorn, Department departmentName, Post myPost, LocalDateTime dateComingAtWork, float workingRate, CategoryDepartment category,boolean policlinic,boolean hospital) {
+        //Employee emp = new EmployeeBuilder().setName("p").setCategory(CategoryEmployee.NONE).build();
+        /*public Employee(String surname, String name, String fathername, String address, LocalDateTime yearBorn, Department departmentName, Post myPost, LocalDateTime dateComingAtWork, float workingRate, CategoryEmployee category,boolean policlinic,boolean hospital) {
         super(surname, name, fathername, address, yearBorn);
         this.idEmployee = ++count;
         this.department=departmentName;

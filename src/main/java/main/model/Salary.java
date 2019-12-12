@@ -1,14 +1,13 @@
 package main.model;
 
 
-import main.enums.CategoryDepartment;
+import main.enums.CategoryEmployee;
 import main.exceptions.MaxDoingHours;
 import main.exceptions.MinDoingHours;
 
 import java.time.LocalDateTime;
 
-
-import static main.enums.CategoryDepartment.*;
+import static main.enums.CategoryEmployee.*;
 
 public class Salary{
     private int id ;
@@ -110,12 +109,12 @@ public class Salary{
     }
     private double AccrueSalary(){
 
-        CategoryDepartment categoryDepartment=employee.getCategory();
+        CategoryEmployee categoryDepartment=employee.getCategory();
         double persentOfCategory=GetPersentWithCategory(categoryDepartment);
         return (employee.getSalaryPost()*employee.getWorkingRate()*(1+persentOfCategory))/ getWorkingHours();
     }
 
-    private double GetPersentWithCategory(CategoryDepartment categoryDepartment) {
+    private double GetPersentWithCategory(CategoryEmployee categoryDepartment) {
 
             if(categoryDepartment==null){
                 System.out.println(("Category can not be NULL"));
@@ -124,11 +123,11 @@ public class Salary{
             }
         if(categoryDepartment==UPPER)
             return 0.3;
-        if (categoryDepartment==THE_FIRST)
+        if (categoryDepartment== FIRST)
             return 0.25;
-        if(categoryDepartment==THE_SECOND)
+        if(categoryDepartment== SECOND)
             return 0.2;
-        if (categoryDepartment==THE_FIRST)
+        if (categoryDepartment== FIRST)
             return 0.1;
         return 0;
 

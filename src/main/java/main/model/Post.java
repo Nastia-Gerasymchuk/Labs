@@ -1,15 +1,10 @@
 package main.model;
 
-import main.exceptions.MaxSalaryException;
-import main.exceptions.MinSalaryException;
-import main.exceptions.SalaryException;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import java.util.Objects;
 
 /**
@@ -21,20 +16,22 @@ import java.util.Objects;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Post {
-    private static final double MAX_SALARY =5000;
-    private static final double MIN_SALARY =3000;
+    public static final double MAX_SALARY =5000;
+    public static final double MIN_SALARY =3000;
 
-    private long id;
+    private int idPost;
 
     @NotNull(message = "name can not be NULL")
     private String name;
 
     @Min(value = 3000,message = "salary needs to be more than 3000")
-    @Max(value = 5000,message = "salary needs to be lass than 3000")
+    @Max(value = 5000,message = "salary needs to be less than 3000")
     private double salary;
+    private int hoursPost;
     private static int count; // UUID
 
-    {id=++count;}
+    {
+        idPost =++count;}
 
     /**
      *private constructor
@@ -44,10 +41,12 @@ public class Post {
     private Post(PostBuilder p){
             this.name=p.name;
             this.salary=p.salary;
+            this.hoursPost=p.hoursPost;
+            this.idPost=p.id;
     }
 
-    private long getId() {
-        return id;
+    public int getIdPost() {
+        return idPost;
     }
     public String getName() {
         return name;
@@ -55,6 +54,7 @@ public class Post {
     public double getSalary() {
         return salary;
     }
+    public int getHoursPost(){return hoursPost;}
 
     @Override
     public boolean equals(Object o) {
@@ -67,14 +67,16 @@ public class Post {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, salary);
+        return Objects.hash(idPost, name, salary,hoursPost);
     }
 
     @Override
     public String toString() {
         return "Post:" +
-                "name='" + name + '\'' +
-                ", salary=" + salary ;
+                "name='" + name + " " +
+                ", salary=" + salary +
+                ", hoursPost=" + hoursPost +
+                '.' ;
     }
 
     /**
@@ -89,8 +91,14 @@ public class Post {
 
 
         private String name = "post";
+        private int hoursPost=0;
         private double salary=MIN_SALARY;
+        private int id;
 
+        public PostBuilder setId(int id) {
+            this.id = id;
+            return this;
+        }
 
         public PostBuilder setName(String name){
 
@@ -118,11 +126,23 @@ public class Post {
                 this.salary = salary;
                 return this;
             }
+        public PostBuilder setHoursPost(int hoursPost){
+
+            if (hoursPost<0){
+                hoursPost=0;
+                System.out.println("hours Post can not be less then NULL\n");
+                System.out.println("hours Post been installed such as 0" );
+            }
+            this.hoursPost=hoursPost;
+            return this;
+        }
 
 
         public Post build(){
             return new Post(this);
         }
+
+
     }
 }
 

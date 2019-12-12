@@ -1,6 +1,7 @@
 package main.io;
 
 import main.model.AllDepartments;
+
 import javax.xml.bind.JAXBException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;

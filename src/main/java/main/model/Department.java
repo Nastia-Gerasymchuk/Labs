@@ -1,15 +1,12 @@
 package main.model;
 
 
-import main.enums.CategoryDepartment;
-
-
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.*;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -19,7 +16,7 @@ import java.util.stream.Stream;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Department {
-    private long id;
+    private int id;
 
     @NotNull(message = "name can not be null")
     private String name;
@@ -29,47 +26,28 @@ public class Department {
     })
     @XmlElementWrapper(name = "employees")
 
-
     private List<Employee> employees;
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
     private static int count;
-    {id =++count;}
-    public Double findMaxSalaryOfDepartment()
     {
-        return employees.stream().map(Employee::getSalaryPost).max(Double::compare).get();
-    }
-    public List<Employee> findEmployeeMaxSal(){
-        return employees.stream()
-                .filter((Employee employee)->{return employee.getSalaryPost()==findMaxSalaryOfDepartment();})
-                .collect(Collectors.toList());
-    }
-
-
-    public List<Employee> findEmpByCategoryAndThisYear(){
-        return employees.stream()
-                .filter( (Employee employee)->{return employee.getCategory().equals(CategoryDepartment.UPPER);} )
-                .filter(e->e.getDateComingAtWork().getYear()==LocalDateTime.now().getYear())
-                .collect(Collectors.toList());
-    }
-
-//    public List<String> searchAllPosts(){
-//        return employees.stream().map(e->e.getMyPost().getName()).distinct().collect(Collectors.toList());
-//    }
-
-    public Employee findEmployeesMaxWorkingRate(){
-        return employees.stream().max(Comparator.comparing(e->e.getWorkingRate())).get();
-    }
+        id =++count;}
 
 
 
     private Department(DepartmentBuilder departmentBuilder){
         this.name=departmentBuilder.name;
-        this.employees=departmentBuilder.employees;
+        //this.employees=departmentBuilder.employees;
+        this.id =departmentBuilder.idDepartment;
     }
 
-    private long getId() {
+    public int getId() {
         return id;
     }
-    private void setId(long id) {
+    private void setId(int id) {
         this.id = id;
     }
     public String getName() {
@@ -96,10 +74,10 @@ public class Department {
     @Override
     public String toString() {
         String res = "Department:" +
-                "name=" + name + ' ' + ", employees:";
-        for (Employee e : employees) {
-            res += e.toString() + "; ";
-        }
+                "name=" + name;// + ' ' + ", employees:";
+//        for (Employee e : employees) {
+//            res += e.toString() + "; ";
+//        }
         return res;
     }
 
@@ -113,7 +91,8 @@ public class Department {
      */
     public static class DepartmentBuilder {
         private String name;
-        private List<Employee> employees;
+        private int idDepartment;
+       // private List<Employee> employees;
 
         public DepartmentBuilder setName(String name) {
             if (name == null) {
@@ -125,33 +104,37 @@ public class Department {
             return this;
         }
 
+        public DepartmentBuilder setIdDepartment(int idDepartment) {
+            this.idDepartment = idDepartment;
+            return this;
+        }
 
-        public DepartmentBuilder setDepartment(List<Employee> employees) {
+       // public DepartmentBuilder setEmployees(List<Employee> employees) {
 
-            if (employees == null) {
+        //    if (employees == null) {
 
-                System.out.println("Employee has ERRORS");
-                employees = new LinkedList<Employee>();
-                Post p = new Post.PostBuilder().setName("").setSalary(0).build();
-                Employee emp = new Employee.EmployeeBuilder().setName("").
-                        setSurname("").
-                        setFathername("").
-                        setAddress("").
-                        setBeingInHospital(false).
-                        setBeingInPoliclinic(false).
-                        setCategory(CategoryDepartment.NONE).
-                        setDateComingAtWork(LocalDateTime.now()).
-                        setPost(p).
-                        setWorkingRate(0).
-                        setYearBorn(LocalDateTime.now()).
-                        build();
-                employees.add(emp);
-                System.out.println("Employee has been installed such as empty" );
-            }
-                this.employees = employees;
-                return this;
+                //System.out.println("Employee has ERRORS");
+                //employees = new LinkedList<Employee>();
+          //      Post p = new Post.PostBuilder().setName("").setSalary(0).build();
+//                Employee emp = new Employee.EmployeeBuilder().setName("").
+//                        setSurname("").
+//                        setFathername("").
+//                        setAddress("").
+//                        setBeingInHospital(false).
+//                        setBeingInPoliclinic(false).
+//                        setCategory(null).
+//                        setDateComingAtWork(LocalDate.now()).
+//                        setPost(p).
+//                        setWorkingRate(0).
+//                        setYearBorn(LocalDate.now()).
+//                        build();
+//                employees.add(emp);
+//                System.out.println("Employee has been installed such as empty" );
+ //           }
+                //this.employees = employees;
+            //    return this;
 
-            }
+            //}
             public Department build () {
                 return new Department(this);
             }

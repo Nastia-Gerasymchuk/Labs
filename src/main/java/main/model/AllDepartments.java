@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class AllDepartments {
 
     @XmlElements({
-            @XmlElement(name="department",type=Department.class)//елементи типу Department, кожен з них має обгортку з назвою (department)
+            @XmlElement(name="department",type= Department.class)//елементи типу Department, кожен з них має обгортку з назвою (department)
     })
     @XmlElementWrapper(name = "departments")
     private Set<Department> departments;

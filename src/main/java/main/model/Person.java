@@ -1,8 +1,9 @@
 package main.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import main.validation.ReviseAge;
 
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -14,15 +15,32 @@ import java.util.Objects;
  */
 
 public  class Person {
-    private long id;
+    private int idPerson;
+
+    @NotNull(message = "Surname can not be NULL")
     protected String surname;
+
+    @NotNull(message = "Name can not be NULL")
     protected String name;
+
+    @NotNull(message = "Fathername can not be NULL")
     protected String fathername;
+
+    @NotNull(message = "Address can not be NULL")
     protected String address;
+
+    @ReviseAge(min=21,message = "Person needs to have more than 21")
     protected LocalDate yearBorn;
+
+    @NotNull
+    protected String login;
+
+    @NotNull
+    protected String pasw;
     protected static int count;
 
-    {id=count++;}
+    {
+        idPerson =count++;}
 
     private Person(PersonBuilder personBuilder){
             this.surname=personBuilder.surname;
@@ -30,12 +48,15 @@ public  class Person {
             this.fathername=personBuilder.fathername;
             this.address=personBuilder.address;
             this.yearBorn=personBuilder.yearBorn;
+            this.login=personBuilder.login;
+            this.pasw=personBuilder.pasw;
+            this.idPerson=personBuilder.idPerson;
     }
 
    protected Person(){}
 
     protected long getPersonId() {
-        return id;
+        return idPerson;
     }
 
     public String getSurname() {
@@ -58,6 +79,17 @@ public  class Person {
         return yearBorn;
     }
 
+    public int getIdPerson() {
+        return idPerson;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPasw() {
+        return pasw;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -71,7 +103,7 @@ public  class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, surname, name, fathername, address, yearBorn);
+        return Objects.hash(idPerson, surname, name, fathername, address, yearBorn);
     }
 
     @Override
@@ -83,6 +115,10 @@ public  class Person {
                 ", address='" + address + '\'' +
                 ", yearBorn=" + yearBorn;
 
+    }
+
+    public void setIdPerson(int idPerson){
+        this.idPerson=idPerson;
     }
 
     /**
@@ -99,6 +135,9 @@ public  class Person {
         private String fathername;
         private String address;
         private LocalDate yearBorn;
+        private String login;
+        private String pasw;
+        private int idPerson;
 
          public PersonBuilder setSurname(String surname) {
 
@@ -141,6 +180,7 @@ public  class Person {
              return this;
          }
 
+
          public PersonBuilder setYearBorn(LocalDate yearBorn){
              if (yearBorn==null) {
                  yearBorn=LocalDate.now();
@@ -150,9 +190,27 @@ public  class Person {
              this.yearBorn= yearBorn;
              return this;
          }
-         public Person build() {
+
+        public PersonBuilder setLogin(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public PersonBuilder setPasw(String pasw) {
+            this.pasw = pasw;
+            return this;
+        }
+
+        public PersonBuilder setIdPerson(int idPerson) {
+            this.idPerson = idPerson;
+            return this;
+        }
+
+        public Person build() {
              return new Person(this);
          }
+
+
     }
     /*public Person setName(String name) {
         this.name = name;
@@ -162,8 +220,8 @@ public  class Person {
         this.surname = surname;
         return this;
     }
-     private Person setId(long id) {
-            this.id = id;
+     private Person setId(long idPerson) {
+            this.idPerson = idPerson;
            return this;
        }
        public Person setAddress(String address) {
